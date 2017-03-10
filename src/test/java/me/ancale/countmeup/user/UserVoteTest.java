@@ -12,7 +12,7 @@ import static org.junit.Assert.assertThat;
 public class UserVoteTest {
 
     @Test
-    public void userShouldBeAbleToCastVote() {
+    public void userShouldBeAbleToVote() {
         User user = new User("u1");
         Candidate candidate = new Candidate("c1");
         LocalDateTime now = LocalDateTime.now();
@@ -21,6 +21,22 @@ public class UserVoteTest {
 
         assertThat(vote.getUserId(), is("u1"));
         assertThat(vote.getCandidateId(), is("c1"));
-        assertThat(vote.getDateTime(), is(now));
+        assertThat(vote.getCreatedAt(), is(now));
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void userShouldNotBeAbleToVoteForNullCandidate() {
+        User user = new User("u1");
+
+        user.voteFor(null, LocalDateTime.now());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void userShouldNotBeAbleToVoteAtNullDate() {
+        User user = new User("u1");
+        Candidate candidate = new Candidate("c1");
+
+        user.voteFor(candidate, null);
+    }
+
 }

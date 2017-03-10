@@ -5,16 +5,22 @@ import me.ancale.countmeup.vote.Vote;
 
 import java.time.LocalDateTime;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 public class User {
 
     private final String id;
 
     public User(String id) {
+        checkNotNull(id, "'id' cannot be null");
         this.id = id;
     }
 
-    public Vote voteFor(Candidate candidate, LocalDateTime now) {
-        return new Vote(getId(), candidate.getId(), now);
+    public Vote voteFor(Candidate candidate, LocalDateTime time) {
+        checkArgument(candidate != null, "'candidate' cannot be null");
+        checkArgument(time != null, "'time' cannot be null");
+        return new Vote(getId(), candidate.getId(), time);
     }
 
     public String getId() {
