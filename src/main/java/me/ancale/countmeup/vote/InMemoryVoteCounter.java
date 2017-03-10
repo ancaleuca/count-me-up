@@ -52,6 +52,8 @@ public class InMemoryVoteCounter implements VoteCounter {
     }
 
     private Comparator<Vote> timeComparator() {
-        return Comparator.comparing(Vote::getCreatedAt);
+        return Comparator
+                .comparing(Vote::getTimestamp)
+                .thenComparing(Vote::getCandidateId);
     }
 }

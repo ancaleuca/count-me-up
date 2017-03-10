@@ -1,5 +1,6 @@
 package me.ancale.countmeup.vote;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Map;
@@ -20,7 +21,7 @@ public class VoteCounterPerformanceTest {
         int count = 10000000;
         Set<Vote> votes = new HashSet<>(count);
         for (int i = 0; i < count; i++) {
-            votes.add(new Vote("u" + i, "1", LocalDateTime.now()));
+            votes.add(new Vote("u" + i, "1", Instant.now()));
         }
         return votes;
     }

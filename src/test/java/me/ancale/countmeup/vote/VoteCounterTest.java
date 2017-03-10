@@ -2,7 +2,7 @@ package me.ancale.countmeup.vote;
 
 import org.junit.Test;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Map;
@@ -17,7 +17,7 @@ public class VoteCounterTest {
 
     @Test
     public void shouldCountTotalVotes() {
-        LocalDateTime time = LocalDateTime.now();
+        Instant time = Instant.now();
         Vote vote1 = new Vote("u1", "c1", time);
         Vote vote2 = new Vote("u2", "c2", time);
         Set<Vote> votes = new HashSet<>(Arrays.asList(vote1, vote2));
@@ -30,7 +30,7 @@ public class VoteCounterTest {
 
     @Test
     public void shouldNotCountDuplicateVotes() {
-        LocalDateTime time = LocalDateTime.now();
+        Instant time = Instant.now();
         Vote vote = new Vote("u1", "c1", time);
         Vote duplicateVote = new Vote("u1", "c1", time);
         Set<Vote> votes = new HashSet<>(Arrays.asList(vote, duplicateVote));
@@ -43,7 +43,7 @@ public class VoteCounterTest {
 
     @Test
     public void shouldCountTotalVotesPerCandidate() {
-        LocalDateTime time = LocalDateTime.now();
+        Instant time = Instant.now();
         Vote vote1 = new Vote("u1", "c1", time);
         Vote vote2 = new Vote("u1", "c2", time);
         Vote vote3 = new Vote("u1", "c3", time);
@@ -64,13 +64,12 @@ public class VoteCounterTest {
         assertThat(votesPerCandidate.get("c3"), is(1L));
     }
 
-
     @Test
     public void shouldCountTotalAccountableVotesPerCandidate() {
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime oneSecondAfter = now.plus(1, SECONDS);
-        LocalDateTime twoSecondsAfter = now.plus(2, SECONDS);
-        LocalDateTime oneSecondBefore = now.minus(1, SECONDS);
+        Instant now = Instant.now();
+        Instant oneSecondAfter = now.plus(1, SECONDS);
+        Instant twoSecondsAfter = now.plus(2, SECONDS);
+        Instant oneSecondBefore = now.minus(1, SECONDS);
 
         Vote vote1 = new Vote("u1", "c1", now);
         Vote vote2 = new Vote("u1", "c2", oneSecondAfter);
