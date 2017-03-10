@@ -2,27 +2,25 @@ package me.ancale.countmeup.vote;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 
 public class VoteCounterPerformanceTest {
 
     public static void main(String... args) {
         System.out.println("Time start " + LocalDateTime.now());
-        VoteCounter counter = new InMemoryVoteCounter(originalVotes());
-        System.out.println("Time start counting " + LocalDateTime.now());
-        Map<String, Long> votesPerCandidate = counter.countTotalAccountablePerCandidate();
-        System.out.println(votesPerCandidate);
-        System.out.println("Time end " + LocalDateTime.now());
-    }
-
-    private static Set<Vote> originalVotes() {
-        int count = 10000000;
-        Set<Vote> votes = new HashSet<>(count);
+        int count = 10_000_000;
+        InMemoryVoteCounter inMemoryVoteCounter = new InMemoryVoteCounter();
         for (int i = 0; i < count; i++) {
-            votes.add(new Vote("u" + i, "1", Instant.now()));
+            Vote vote = new Vote("u" + i, "c" + i % 5, Instant.now());
+            inMemoryVoteCounter.addVote(vote);
+            if (i % 300_000 == 0) {
+                Instant start = Instant.now();
+                VoteCountSummary summary = inMemoryVoteCounter.count();
+                Instant end = Instant.now();
+                System.out.println("Time spent counting (ms): " + (end.toEpochMilli() - start.toEpochMilli()));
+                System.out.println("Total votes so far: " + summary.getTotalVotes());
+            }
         }
-        return votes;
+        System.out.println("Total votes: " + inMemoryVoteCounter.count().getTotalVotes());
+        System.out.println("Time end " + LocalDateTime.now());
     }
 }

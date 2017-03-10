@@ -1,59 +1,53 @@
 package me.ancale.countmeup.vote;
 
-import com.google.common.collect.ImmutableSet;
+import com.google.common.annotations.VisibleForTesting;
 
-import java.util.*;
-import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.counting;
-import static java.util.stream.Collectors.groupingBy;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class InMemoryVoteCounter implements VoteCounter {
 
-    private static final int MAX_VOTES_PER_USER = 3;
+    private final Map<String, Long> votesPerCandidate;
+    private final Map<String, Long> accountableVotesPerCandidate;
+    private final Map<String, Long> votesPerUser;
+    private final Queue<Vote> allVotes;
 
-    private final ImmutableSet<Vote> votes;
-
-    public InMemoryVoteCounter(Set<Vote> votes) {
-        this.votes = ImmutableSet.copyOf(votes);
+    public InMemoryVoteCounter() {
+        this.votesPerCandidate = new ConcurrentHashMap<>();
+        this.accountableVotesPerCandidate = new ConcurrentHashMap<>();
+        this.votesPerUser = new ConcurrentHashMap<>();
+        this.allVotes = new ConcurrentLinkedQueue<>();
     }
 
-    @Override
-    public long countTotal() {
-        return votes.size();
-    }
-
-    @Override
-    public Map<String, Long> countTotalPerCandidate() {
-        return votes.stream().collect(groupingBy(Vote::getCandidateId, counting()));
-    }
-
-    @Override
-    public Map<String, Long> countTotalAccountablePerCandidate() {
-        return accountableVotes().stream().collect(groupingBy(Vote::getCandidateId, counting()));
-    }
-
-    private Set<Vote> accountableVotes() {
-        Map<String, SortedSet<Vote>> votesByUser = new HashMap<>();
-        Comparator<Vote> timeComparator = timeComparator();
-
+    @VisibleForTesting
+    InMemoryVoteCounter(List<Vote> votes) {
+        this();
         for (Vote vote: votes) {
-            if (!votesByUser.containsKey(vote.getUserId())) {
-                votesByUser.put(vote.getUserId(), new TreeSet<>(timeComparator));
-            }
-
-            Set<Vote> existingVotes = votesByUser.get(vote.getUserId());
-            if (existingVotes.size() < MAX_VOTES_PER_USER) {
-                votesByUser.get(vote.getUserId()).add(vote);
-            }
+            addVote(vote);
         }
-
-        return votesByUser.entrySet().stream().flatMap(entry -> entry.getValue().stream()).collect(Collectors.toSet());
     }
 
-    private Comparator<Vote> timeComparator() {
-        return Comparator
-                .comparing(Vote::getTimestamp)
-                .thenComparing(Vote::getCandidateId);
+    @Override
+    public synchronized VoteCountSummary count() {
+        return new VoteCountSummary(votesPerCandidate, accountableVotesPerCandidate);
+    }
+
+    public synchronized void addVote(Vote vote) {
+        allVotes.add(vote);
+        increaseCountPerKey(votesPerUser, vote.getUserId());
+        increaseCountPerKey(votesPerCandidate, vote.getCandidateId());
+        if (votesPerUser.get(vote.getUserId()) <= 3) {
+            increaseCountPerKey(accountableVotesPerCandidate, vote.getCandidateId());
+        }
+    }
+
+    private static void increaseCountPerKey(Map<String, Long> map, String key) {
+        if (!map.containsKey(key)) {
+            map.put(key, 0L);
+        }
+        map.put(key, map.get(key) + 1);
     }
 }
