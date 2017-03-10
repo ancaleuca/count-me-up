@@ -1,5 +1,7 @@
 package me.ancale.countmeup.vote;
 
+import com.google.common.base.Objects;
+
 import java.time.LocalDateTime;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -31,5 +33,20 @@ public class Vote {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Vote vote = (Vote) o;
+        return Objects.equal(userId, vote.userId) &&
+                Objects.equal(candidateId, vote.candidateId) &&
+                Objects.equal(createdAt, vote.createdAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(userId, candidateId, createdAt);
     }
 }
