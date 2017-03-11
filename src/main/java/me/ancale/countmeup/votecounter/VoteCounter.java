@@ -1,4 +1,4 @@
-package me.ancale.countmeup.vote;
+package me.ancale.countmeup.votecounter;
 
 public interface VoteCounter {
 

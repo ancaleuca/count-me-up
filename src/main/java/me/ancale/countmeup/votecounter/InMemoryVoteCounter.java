@@ -1,6 +1,7 @@
-package me.ancale.countmeup.vote;
+package me.ancale.countmeup.votecounter;
 
 import com.google.common.annotations.VisibleForTesting;
+import me.ancale.countmeup.vote.Vote;
 
 import java.util.List;
 import java.util.Map;
@@ -21,7 +22,7 @@ public class InMemoryVoteCounter implements VoteCounter {
     }
 
     @VisibleForTesting
-    InMemoryVoteCounter(List<Vote> votes) {
+    public InMemoryVoteCounter(List<Vote> votes) {
         this();
         for (Vote vote: votes) {
             addVote(vote);
@@ -33,7 +34,7 @@ public class InMemoryVoteCounter implements VoteCounter {
         return new VoteCountSummary(votesPerCandidate, accountableVotesPerCandidate);
     }
 
-    synchronized void addVote(Vote vote) {
+    public synchronized void addVote(Vote vote) {
         increaseCountPerKey(votesPerUser, vote.getUserId());
         increaseCountPerKey(votesPerCandidate, vote.getCandidateId());
         if (votesPerUser.get(vote.getUserId()) <= MAX_VOTES_PER_USER) {
