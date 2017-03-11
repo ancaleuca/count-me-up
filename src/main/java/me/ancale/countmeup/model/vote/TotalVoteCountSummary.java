@@ -5,7 +5,7 @@ import com.google.common.collect.ImmutableMap;
 
 import java.util.Map;
 
-public class VoteCountSummary {
+public class TotalVoteCountSummary {
 
     private final ImmutableMap<String, Long> totalPerCandidate;
 
@@ -13,7 +13,7 @@ public class VoteCountSummary {
 
     private final long totalVotes;
 
-    public VoteCountSummary(Map<String, Long> totalPerCandidate, Map<String, Long> accountablePerCandidate) {
+    public TotalVoteCountSummary(Map<String, Long> totalPerCandidate, Map<String, Long> accountablePerCandidate) {
         this.totalPerCandidate = ImmutableMap.copyOf(totalPerCandidate);
         this.accountablePerCandidate = ImmutableMap.copyOf(accountablePerCandidate);
         this.totalVotes = this.totalPerCandidate.entrySet().stream().mapToLong(Map.Entry::getValue).sum();

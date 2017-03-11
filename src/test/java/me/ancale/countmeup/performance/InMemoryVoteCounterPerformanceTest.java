@@ -40,7 +40,7 @@ public class InMemoryVoteCounterPerformanceTest {
             thread.join();
         }
 
-        assertThat(inMemoryVoteCounter.count().getTotalVotes(), is((long)totalExpectedCount));
+        assertThat(inMemoryVoteCounter.countAll().getTotalVotes(), is((long)totalExpectedCount));
     }
 
     private void addVotes(int count, InMemoryVoteCounter inMemoryVoteCounter) {
@@ -62,7 +62,7 @@ public class InMemoryVoteCounterPerformanceTest {
                 fail(e.getMessage());
             }
             Instant start = Instant.now();
-            inMemoryVoteCounter.count();
+            inMemoryVoteCounter.countAll();
             Instant end = Instant.now();
             long millisSpentCounting = end.toEpochMilli() - start.toEpochMilli();
             assertThat("Took over a second to count = " + millisSpentCounting, millisSpentCounting < 1000, is(true));

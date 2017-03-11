@@ -24,7 +24,7 @@ public class VoteCounterTest {
         Vote vote2 = new Vote("u2", "c2", time);
         voteCounter = new InMemoryVoteCounter(Arrays.asList(vote1, vote2));
 
-        long count = voteCounter.count().getTotalVotes();
+        long count = voteCounter.countAll().getTotalVotes();
         assertThat(count, is(2L));
     }
 
@@ -40,7 +40,7 @@ public class VoteCounterTest {
 
         voteCounter = new InMemoryVoteCounter(Arrays.asList(vote1, vote2, vote3, vote4, vote5, vote6));
 
-        Map<String, Long> votesPerCandidate = voteCounter.count().getTotalPerCandidate();
+        Map<String, Long> votesPerCandidate = voteCounter.countAll().getTotalPerCandidate();
 
         assertThat(votesPerCandidate, is(notNullValue()));
         assertThat(votesPerCandidate.size(), is(3));
@@ -63,7 +63,7 @@ public class VoteCounterTest {
 
         InMemoryVoteCounter voteCounter = new InMemoryVoteCounter(Arrays.asList(vote1, vote2, vote3, vote4));
 
-        Map<String, Long> votesPerCandidate = voteCounter.count().getAccountablePerCandidate();
+        Map<String, Long> votesPerCandidate = voteCounter.countAll().getAccountablePerCandidate();
 
         assertThat(votesPerCandidate, is(notNullValue()));
         assertThat(votesPerCandidate.size(), is(2));

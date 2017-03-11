@@ -1,11 +1,14 @@
 package me.ancale.countmeup.service;
 
-import me.ancale.countmeup.model.vote.VoteCountSummary;
+import me.ancale.countmeup.model.vote.AccountableVoteCountSummary;
+import me.ancale.countmeup.model.vote.TotalVoteCountSummary;
 
 public interface VoteCounter {
 
     int MAX_VOTES_PER_USER = 3;
 
-    VoteCountSummary count();
+    TotalVoteCountSummary countAll();
+
+    AccountableVoteCountSummary countAccountable();
 
 }

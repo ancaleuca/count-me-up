@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 /**
  * This solution is based on storing the real and allowed votes in a database.
  * I made an improvement by storing a mapping of the number of votes per user in an utility table,
- * so that a controller will be considered accountable iif the user's current number of votes is <= 3.
+ * so that a user will be considered accountable iif the user's current number of votes is <= 3.
  * This way I avoid making a subselect when counting the votes, which would slow down the query considerably.
  */
 @Component
@@ -39,15 +39,15 @@ public class RepositoryBasedVoteCounter implements VoteCounter, VoteStore {
     }
 
     @Override
-    public VoteCountSummary count() {
+    public TotalVoteCountSummary countAll() {
         Instant timeNow = Instant.now();
-        Map<String, Long> totalVotesPerCandidate = voteRepository.countVotesPerCandidate(timeNow.toEpochMilli())
-                .stream()
-                .collect(Collectors.toMap(VotePerCandidate::getCandidateId, VotePerCandidate::getCount));
-        Map<String, Long> accountableVotesPerCandidate = accountableVoteRepository.countVotesPerCandidate(timeNow.toEpochMilli())
-                .stream()
-                .collect(Collectors.toMap(VotePerCandidate::getCandidateId, VotePerCandidate::getCount));
-        return new VoteCountSummary(totalVotesPerCandidate, accountableVotesPerCandidate);
+        return new TotalVoteCountSummary(getAllVotes(timeNow), getAccountableVotes(timeNow));
+    }
+
+    @Override
+    public AccountableVoteCountSummary countAccountable() {
+        Instant timeNow = Instant.now();
+        return new AccountableVoteCountSummary(getAccountableVotes(timeNow));
     }
 
     @Override
@@ -64,5 +64,17 @@ public class RepositoryBasedVoteCounter implements VoteCounter, VoteStore {
             AccountableVote accountableVote = new AccountableVote(vote);
             accountableVoteRepository.save(accountableVote);
         }
+    }
+
+    private Map<String, Long> getAccountableVotes(Instant timeNow) {
+        return accountableVoteRepository.countVotesPerCandidate(timeNow.toEpochMilli())
+                .stream()
+                .collect(Collectors.toMap(VotePerCandidate::getCandidateId, VotePerCandidate::getCount));
+    }
+
+    private Map<String, Long> getAllVotes(Instant timeNow) {
+        return voteRepository.countVotesPerCandidate(timeNow.toEpochMilli())
+                .stream()
+                .collect(Collectors.toMap(VotePerCandidate::getCandidateId, VotePerCandidate::getCount));
     }
 }

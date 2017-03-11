@@ -13,14 +13,25 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class VoteCounterControllerTest extends AbstractIntegrationTest {
 
     @Test
-    public void canCountVotesPerCandidate() throws Exception {
-        mockMvc.perform(get("/votes/count")
+    public void canCountAllVotesPerCandidate() throws Exception {
+        mockMvc.perform(get("/votes/count/all")
                 .contentType(APPLICATION_JSON)
                 .accept(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(jsonPath(".totalVotes").value(0))
                 .andExpect(jsonPath(".totalPerCandidate").value(Collections.emptyMap()))
+                .andExpect(jsonPath(".accountablePerCandidate").value(Collections.emptyMap()))
+                .andReturn();
+    }
+
+    @Test
+    public void canCountAccountableVotesPerCandidate() throws Exception {
+        mockMvc.perform(get("/votes/count/accountable")
+                .contentType(APPLICATION_JSON)
+                .accept(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print())
                 .andExpect(jsonPath(".accountablePerCandidate").value(Collections.emptyMap()))
                 .andReturn();
     }
