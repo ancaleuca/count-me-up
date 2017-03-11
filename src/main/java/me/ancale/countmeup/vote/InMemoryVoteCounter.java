@@ -4,22 +4,20 @@ import com.google.common.annotations.VisibleForTesting;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class InMemoryVoteCounter implements VoteCounter {
+
+    private static final int MAX_VOTES_PER_USER = 3;
 
     private final Map<String, Long> votesPerCandidate;
     private final Map<String, Long> accountableVotesPerCandidate;
     private final Map<String, Long> votesPerUser;
-    private final Queue<Vote> allVotes;
 
     public InMemoryVoteCounter() {
         this.votesPerCandidate = new ConcurrentHashMap<>();
         this.accountableVotesPerCandidate = new ConcurrentHashMap<>();
         this.votesPerUser = new ConcurrentHashMap<>();
-        this.allVotes = new ConcurrentLinkedQueue<>();
     }
 
     @VisibleForTesting
@@ -35,11 +33,10 @@ public class InMemoryVoteCounter implements VoteCounter {
         return new VoteCountSummary(votesPerCandidate, accountableVotesPerCandidate);
     }
 
-    public synchronized void addVote(Vote vote) {
-        allVotes.add(vote);
+    synchronized void addVote(Vote vote) {
         increaseCountPerKey(votesPerUser, vote.getUserId());
         increaseCountPerKey(votesPerCandidate, vote.getCandidateId());
-        if (votesPerUser.get(vote.getUserId()) <= 3) {
+        if (votesPerUser.get(vote.getUserId()) <= MAX_VOTES_PER_USER) {
             increaseCountPerKey(accountableVotesPerCandidate, vote.getCandidateId());
         }
     }
