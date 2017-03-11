@@ -11,6 +11,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * This is a simple and fast memory-based solution for the counter.
+ * However, it won't suffice because we cannot expect our server to run on a single machine
+ * and thus have just the one cache to write and read from.
+ * Also, of course, all data would be lost if the server went down.
+ * I implemented this for fun to see how well Java will cope with the large dataset.
+ */
 @Component
 public class InMemoryVoteCounter implements VoteCounter, VoteStore {
 

@@ -15,18 +15,24 @@ import java.time.Instant;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * This solution is based on storing the real and allowed votes in a database.
+ * I made an improvement by storing a mapping of the number of votes per user in an utility table,
+ * so that a vote will be considered accountable iif the user's current number of votes is <= 3.
+ * This way I avoid making a subselect when counting the votes, which would slow down the query considerably.
+ */
 @Component
 @Primary
-public class PersistenceBasedVoteCounter implements VoteCounter, VoteStore {
+public class RepositoryBasedVoteCounter implements VoteCounter, VoteStore {
 
     private final VoteRepository voteRepository;
     private final AccountableVoteRepository accountableVoteRepository;
     private final UserVoteCountRepository userVoteCountRepository;
 
     @Autowired
-    public PersistenceBasedVoteCounter(VoteRepository voteRepository,
-                                       AccountableVoteRepository accountableVoteRepository,
-                                       UserVoteCountRepository userVoteCountRepository) {
+    public RepositoryBasedVoteCounter(VoteRepository voteRepository,
+                                      AccountableVoteRepository accountableVoteRepository,
+                                      UserVoteCountRepository userVoteCountRepository) {
         this.voteRepository = voteRepository;
         this.accountableVoteRepository = accountableVoteRepository;
         this.userVoteCountRepository = userVoteCountRepository;
