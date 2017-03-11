@@ -1,8 +1,10 @@
-package me.ancale.countmeup.votecounter;
+package me.ancale.countmeup.performance;
 
+import me.ancale.countmeup.PerformanceTest;
 import me.ancale.countmeup.model.vote.Vote;
 import me.ancale.countmeup.service.inmemory.InMemoryVoteCounter;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -12,7 +14,8 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
-public class VoteCounterPerformanceTest {
+@Category(PerformanceTest.class)
+public class InMemoryVoteCounterPerformanceTest {
 
     @Test
     public void multipleThreadsShouldCountVotesUnderOneSecond() throws Exception {

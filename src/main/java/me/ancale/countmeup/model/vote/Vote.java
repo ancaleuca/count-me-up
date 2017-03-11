@@ -19,13 +19,13 @@ public class Vote {
     private long id;
 
     @NotNull
-    private final String userId;
+    private String userId;
 
     @NotNull
-    private final String candidateId;
+    private String candidateId;
 
     @NotNull
-    private final long timestamp;
+    private long timestamp;
 
     public Vote(String userId, String candidateId, Instant time) {
         checkNotNull(userId, "'userId' cannot be null");
@@ -35,6 +35,10 @@ public class Vote {
         this.userId = userId;
         this.candidateId = candidateId;
         this.timestamp = time.toEpochMilli();
+    }
+
+    // for JPA
+    public Vote() {
     }
 
     public String getUserId() {

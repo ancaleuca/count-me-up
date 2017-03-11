@@ -18,20 +18,24 @@ public class AccountableVote {
     private long id;
 
     @NotNull
-    private final String userId;
+    private String userId;
 
     @NotNull
-    private final String candidateId;
+    private String candidateId;
 
     @NotNull
-    private final long timestamp;
+    private long timestamp;
 
     public AccountableVote(Vote vote) {
-        checkNotNull(vote, "'vote' cannot be null");
+        checkNotNull(vote, "'controller' cannot be null");
 
         this.userId = vote.getUserId();
         this.candidateId = vote.getCandidateId();
         this.timestamp = vote.getTimestamp();
+    }
+
+    // for JPA
+    public AccountableVote() {
     }
 
     public String getUserId() {

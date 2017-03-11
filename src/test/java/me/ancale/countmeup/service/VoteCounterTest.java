@@ -1,4 +1,4 @@
-package me.ancale.countmeup.votecounter;
+package me.ancale.countmeup.service;
 
 import me.ancale.countmeup.model.vote.Vote;
 import me.ancale.countmeup.service.inmemory.InMemoryVoteCounter;

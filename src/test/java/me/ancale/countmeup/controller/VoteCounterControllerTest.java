@@ -1,6 +1,5 @@
-package me.ancale.countmeup.votecounter;
+package me.ancale.countmeup.controller;
 
-import me.ancale.countmeup.AbstractIntegrationTest;
 import org.junit.Test;
 
 import java.util.Collections;

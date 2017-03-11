@@ -1,5 +1,9 @@
-package me.ancale.countmeup;
+package me.ancale.countmeup.controller;
 
+import me.ancale.countmeup.repository.AccountableVoteRepository;
+import me.ancale.countmeup.repository.UserVoteCountRepository;
+import me.ancale.countmeup.repository.VoteRepository;
+import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -17,6 +21,19 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 public abstract class AbstractIntegrationTest {
 
     @Autowired
+    private VoteRepository voteRepository;
+    @Autowired
+    private AccountableVoteRepository accountableVoteRepository;
+    @Autowired
+    private UserVoteCountRepository userVoteCountRepository;
+    @Autowired
     protected MockMvc mockMvc;
+
+    @Before
+    public void before() {
+        voteRepository.deleteAll();
+        accountableVoteRepository.deleteAll();
+        userVoteCountRepository.deleteAll();
+    }
 
 }

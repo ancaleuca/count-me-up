@@ -27,6 +27,7 @@ public class UserVoteCount {
         this.voteCount = voteCount;
     }
 
+    // for JPA
     public UserVoteCount() {
     }
 

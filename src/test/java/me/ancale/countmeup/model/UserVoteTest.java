@@ -1,7 +1,5 @@
-package me.ancale.countmeup.user;
+package me.ancale.countmeup.model;
 
-import me.ancale.countmeup.model.Candidate;
-import me.ancale.countmeup.model.User;
 import me.ancale.countmeup.model.vote.Vote;
 import org.junit.Test;
 

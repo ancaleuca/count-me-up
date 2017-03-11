@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 /**
  * This solution is based on storing the real and allowed votes in a database.
  * I made an improvement by storing a mapping of the number of votes per user in an utility table,
- * so that a vote will be considered accountable iif the user's current number of votes is <= 3.
+ * so that a controller will be considered accountable iif the user's current number of votes is <= 3.
  * This way I avoid making a subselect when counting the votes, which would slow down the query considerably.
  */
 @Component

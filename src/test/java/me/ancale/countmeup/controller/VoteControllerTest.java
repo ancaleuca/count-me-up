@@ -1,6 +1,5 @@
-package me.ancale.countmeup.vote;
+package me.ancale.countmeup.controller;
 
-import me.ancale.countmeup.AbstractIntegrationTest;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 
