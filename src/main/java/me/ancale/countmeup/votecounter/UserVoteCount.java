@@ -16,7 +16,7 @@ public class UserVoteCount {
     private long id;
 
     @NotNull
-    private final String userId;
+    private String userId;
 
     private int voteCount;
 
@@ -25,6 +25,9 @@ public class UserVoteCount {
 
         this.userId = userId;
         this.voteCount = voteCount;
+    }
+
+    public UserVoteCount() {
     }
 
     public String getUserId() {
