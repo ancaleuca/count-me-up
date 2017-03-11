@@ -12,17 +12,18 @@ public class Vote {
 
     private final String candidateId;
 
-    private final Instant timestamp;
+    private final long timestamp;
 
-    public Vote(String userId, String candidateId, Instant timestamp) {
+    public Vote(String userId, String candidateId, Instant time) {
         checkNotNull(userId, "'userId' cannot be null");
         checkNotNull(candidateId, "'candidateId' cannot be null");
-        checkNotNull(timestamp, "'timestamp' cannot be null");
+        checkNotNull(time, "'time' cannot be null");
 
         this.userId = userId;
         this.candidateId = candidateId;
-        this.timestamp = timestamp;
+        this.timestamp = time.toEpochMilli();
     }
+
     public String getUserId() {
         return userId;
     }
@@ -31,7 +32,7 @@ public class Vote {
         return candidateId;
     }
 
-    public Instant getTimestamp() {
+    public long getTimestamp() {
         return timestamp;
     }
 

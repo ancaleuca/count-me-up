@@ -17,10 +17,10 @@ public class User {
         this.id = id;
     }
 
-    public Vote voteFor(Candidate candidate, Instant timestamp) {
+    public Vote voteFor(Candidate candidate, Instant time) {
         checkArgument(candidate != null, "'candidate' cannot be null");
-        checkArgument(timestamp != null, "'timestamp' cannot be null");
-        return new Vote(getId(), candidate.getId(), timestamp);
+        checkArgument(time != null, "'time' cannot be null");
+        return new Vote(getId(), candidate.getId(), time);
     }
 
     public String getId() {

@@ -21,7 +21,7 @@ public class UserVoteTest {
 
         assertThat(vote.getUserId(), is("u1"));
         assertThat(vote.getCandidateId(), is("c1"));
-        assertThat(vote.getTimestamp(), is(now));
+        assertThat(vote.getTimestamp(), is(now.toEpochMilli()));
     }
 
     @Test(expected = IllegalArgumentException.class)
