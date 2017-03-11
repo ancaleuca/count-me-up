@@ -2,6 +2,7 @@ package me.ancale.countmeup.vote;
 
 import me.ancale.countmeup.candidate.Candidate;
 import me.ancale.countmeup.user.User;
+import me.ancale.countmeup.votecounter.VoteCountStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +26,10 @@ public class VoteController {
     private static final String VAR_CANDIDATE_ID = "candidateId";
     private static final String VAR_USER_ID = "userId";
 
-    private final VotePersistenceStore persistenceStore;
+    private final VoteCountStore persistenceStore;
 
     @Autowired
-    public VoteController(VotePersistenceStore persistenceStore) {
+    public VoteController(VoteCountStore persistenceStore) {
         this.persistenceStore = persistenceStore;
     }
 

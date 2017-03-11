@@ -7,12 +7,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
-import java.time.Instant;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 @Entity
-public class Vote {
+public class AccountableVote {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,14 +26,12 @@ public class Vote {
     @NotNull
     private final long timestamp;
 
-    public Vote(String userId, String candidateId, Instant time) {
-        checkNotNull(userId, "'userId' cannot be null");
-        checkNotNull(candidateId, "'candidateId' cannot be null");
-        checkNotNull(time, "'time' cannot be null");
+    public AccountableVote(Vote vote) {
+        checkNotNull(vote, "'vote' cannot be null");
 
-        this.userId = userId;
-        this.candidateId = candidateId;
-        this.timestamp = time.toEpochMilli();
+        this.userId = vote.getUserId();
+        this.candidateId = vote.getCandidateId();
+        this.timestamp = vote.getTimestamp();
     }
 
     public String getUserId() {
@@ -57,7 +54,7 @@ public class Vote {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Vote vote = (Vote) o;
+        AccountableVote vote = (AccountableVote) o;
         return Objects.equal(userId, vote.userId) &&
                 Objects.equal(candidateId, vote.candidateId) &&
                 Objects.equal(timestamp, vote.timestamp);
