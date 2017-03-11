@@ -1,4 +1,4 @@
-package me.ancale.countmeup.votecounter;
+package me.ancale.countmeup.model.vote;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableMap;

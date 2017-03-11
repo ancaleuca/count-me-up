@@ -1,4 +1,6 @@
-package me.ancale.countmeup.votecounter;
+package me.ancale.countmeup.service;
+
+import me.ancale.countmeup.model.vote.VoteCountSummary;
 
 public interface VoteCounter {
 

@@ -1,5 +1,7 @@
-package me.ancale.countmeup.votecounter;
+package me.ancale.countmeup.controller;
 
+import me.ancale.countmeup.model.vote.VoteCountSummary;
+import me.ancale.countmeup.service.VoteCounter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

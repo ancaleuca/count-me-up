@@ -1,7 +1,8 @@
 package me.ancale.countmeup.user;
 
-import me.ancale.countmeup.candidate.Candidate;
-import me.ancale.countmeup.vote.Vote;
+import me.ancale.countmeup.model.Candidate;
+import me.ancale.countmeup.model.User;
+import me.ancale.countmeup.model.vote.Vote;
 import org.junit.Test;
 
 import java.time.Instant;

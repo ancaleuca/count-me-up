@@ -1,8 +1,8 @@
-package me.ancale.countmeup.vote;
+package me.ancale.countmeup.controller;
 
-import me.ancale.countmeup.candidate.Candidate;
-import me.ancale.countmeup.user.User;
-import me.ancale.countmeup.votecounter.VoteCountStore;
+import me.ancale.countmeup.model.Candidate;
+import me.ancale.countmeup.model.User;
+import me.ancale.countmeup.service.VoteStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +26,11 @@ public class VoteController {
     private static final String VAR_CANDIDATE_ID = "candidateId";
     private static final String VAR_USER_ID = "userId";
 
-    private final VoteCountStore persistenceStore;
+    private final VoteStore voteStore;
 
     @Autowired
-    public VoteController(VoteCountStore persistenceStore) {
-        this.persistenceStore = persistenceStore;
+    public VoteController(VoteStore voteStore) {
+        this.voteStore = voteStore;
     }
 
     // IMPORTANT: For the sake of brevity, I'm passing userId as a request parameter
@@ -42,7 +42,7 @@ public class VoteController {
         User user = new User(userId);
         Candidate candidate = new Candidate(candidateId);
 
-        persistenceStore.addVote(user.voteFor(candidate, Instant.now()));
+        voteStore.addVote(user.voteFor(candidate, Instant.now()));
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

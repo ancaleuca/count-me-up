@@ -1,4 +1,4 @@
-package me.ancale.countmeup.votecounter;
+package me.ancale.countmeup.model.vote;
 
 public class VotePerCandidate {
 

@@ -1,4 +1,4 @@
-package me.ancale.countmeup.votecounter;
+package me.ancale.countmeup.model.vote;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

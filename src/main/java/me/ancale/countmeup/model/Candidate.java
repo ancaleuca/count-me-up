@@ -1,4 +1,4 @@
-package me.ancale.countmeup.candidate;
+package me.ancale.countmeup.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

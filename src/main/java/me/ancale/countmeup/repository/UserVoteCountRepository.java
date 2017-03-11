@@ -1,5 +1,6 @@
-package me.ancale.countmeup.votecounter;
+package me.ancale.countmeup.repository;
 
+import me.ancale.countmeup.model.vote.UserVoteCount;
 import org.springframework.data.repository.CrudRepository;
 
 import javax.transaction.Transactional;

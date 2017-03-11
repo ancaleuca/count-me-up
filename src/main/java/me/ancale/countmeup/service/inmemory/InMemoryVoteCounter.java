@@ -1,7 +1,10 @@
-package me.ancale.countmeup.votecounter;
+package me.ancale.countmeup.service.inmemory;
 
 import com.google.common.annotations.VisibleForTesting;
-import me.ancale.countmeup.vote.Vote;
+import me.ancale.countmeup.model.vote.Vote;
+import me.ancale.countmeup.service.VoteStore;
+import me.ancale.countmeup.model.vote.VoteCountSummary;
+import me.ancale.countmeup.service.VoteCounter;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -9,7 +12,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
-public class InMemoryVoteCounter implements VoteCounter, VoteCountStore {
+public class InMemoryVoteCounter implements VoteCounter, VoteStore {
 
     private final Map<String, Long> votesPerCandidate;
     private final Map<String, Long> accountableVotesPerCandidate;

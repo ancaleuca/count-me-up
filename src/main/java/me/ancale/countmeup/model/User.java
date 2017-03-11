@@ -1,7 +1,6 @@
-package me.ancale.countmeup.user;
+package me.ancale.countmeup.model;
 
-import me.ancale.countmeup.candidate.Candidate;
-import me.ancale.countmeup.vote.Vote;
+import me.ancale.countmeup.model.vote.Vote;
 
 import java.time.Instant;
 

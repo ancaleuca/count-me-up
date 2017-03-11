@@ -1,7 +1,7 @@
 package me.ancale.countmeup.votecounter;
 
-import me.ancale.countmeup.vote.Vote;
-import me.ancale.countmeup.votecounter.InMemoryVoteCounter;
+import me.ancale.countmeup.model.vote.Vote;
+import me.ancale.countmeup.service.inmemory.InMemoryVoteCounter;
 import org.junit.Test;
 
 import java.time.Instant;
