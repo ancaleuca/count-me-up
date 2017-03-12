@@ -32,7 +32,7 @@ public class LoadInitialDataTest {
 
         for (int i = 0; i < voteCount; i++) {
             String userId = "u" + random.nextInt(userCount);
-            String candidateId = "c" + (1 + random.nextInt(4));
+            String candidateId = "c" + (1 + random.nextInt(5));
             voteApprover.addVote(new Vote(userId, candidateId, Instant.now()));
         }
     }

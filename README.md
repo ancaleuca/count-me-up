@@ -90,13 +90,13 @@ The following graph shows the average response times for countMeUp, when run eve
 when there had already been 1 million votes, and the server is being loaded with about 50 concurrent users voting every
 second (see `CountMeUpPerformanceTest.jmx` for the test plan).
 
-![Response times for countMeUp](https://octodex.github.com/images/yaktocat.png)
+![Response times for countMeUp](https://github.com/ancaleuca/count-me-up/blob/master/src/test/resources/response_time_graph.png)
 
 ## Approach
 I started with a simple in-memory counter, which kept a map from candidates to their accountable vote counts and an
 additional helper map from users to number of casted votes. You can see this solution in `InMemoryVoteCounter.java`
-This, of course, was never going to be a viable solution because it didn't persist anything (so the server could go down at any point
-and lose all data), and also the cache could not be shared between multiple instances of the same server.
+Although fast enough, it was never going to be a viable solution because it didn't persist anything
+(so the server could go down at any point and lose all data), and also the cache could not be shared between multiple instances of the same server.
 However, it did serve as a good starting point because it made me think of the database structure I've outlined above, with
 the helper `user_vote_count` table.
 
