@@ -23,11 +23,11 @@ public abstract class AbstractIntegrationTest {
     @Autowired
     private VoteRepository voteRepository;
     @Autowired
-    private AccountableVoteRepository accountableVoteRepository;
+    AccountableVoteRepository accountableVoteRepository;
     @Autowired
     private UserVoteCountRepository userVoteCountRepository;
     @Autowired
-    protected MockMvc mockMvc;
+    MockMvc mockMvc;
 
     @Before
     public void before() {

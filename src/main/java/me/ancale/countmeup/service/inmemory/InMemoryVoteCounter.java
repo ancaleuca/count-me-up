@@ -1,8 +1,8 @@
 package me.ancale.countmeup.service.inmemory;
 
 import com.google.common.annotations.VisibleForTesting;
-import me.ancale.countmeup.model.vote.AccountableVoteCountSummary;
 import me.ancale.countmeup.model.vote.Vote;
+import me.ancale.countmeup.model.vote.VoteCountsDto;
 import me.ancale.countmeup.service.VoteCounter;
 import me.ancale.countmeup.service.VoteStore;
 import org.springframework.stereotype.Component;
@@ -40,8 +40,8 @@ public class InMemoryVoteCounter implements VoteCounter, VoteStore {
     }
 
     @Override
-    public synchronized AccountableVoteCountSummary countAccountable() {
-        return new AccountableVoteCountSummary(accountableVotesPerCandidate);
+    public synchronized VoteCountsDto countAccountable() {
+        return VoteCountsDto.from(accountableVotesPerCandidate);
     }
 
     @Override

@@ -1,7 +1,7 @@
-package me.ancale.countmeup.service.hybrid;
+package me.ancale.countmeup.service.counter;
 
 import me.ancale.countmeup.model.vote.AccountableVote;
-import me.ancale.countmeup.model.vote.AccountableVoteCountSummary;
+import me.ancale.countmeup.model.vote.VoteCountsDto;
 import me.ancale.countmeup.model.vote.UserVoteCount;
 import me.ancale.countmeup.model.vote.Vote;
 import me.ancale.countmeup.repository.AccountableVoteRepository;
@@ -41,7 +41,7 @@ public class PersistenceBasedVoteCounter implements VoteCounter, VoteStore {
     }
 
     @Override
-    public synchronized AccountableVoteCountSummary countAccountable() {
+    public synchronized VoteCountsDto countAccountable() {
         long currentTimestamp = Instant.now().toEpochMilli();
         Map<String, Long> latestVotes = accountableVoteRepository.countVotesPerCandidate(lastReadTimestamp.get(), currentTimestamp)
                 .stream().collect(Collectors.toMap(VoteCountPerCandidateQueryResult::getCandidateId, VoteCountPerCandidateQueryResult::getCount));
@@ -55,7 +55,7 @@ public class PersistenceBasedVoteCounter implements VoteCounter, VoteStore {
         }
 
         lastReadTimestamp.set(currentTimestamp);
-        return new AccountableVoteCountSummary(accountableVotesPerCandidate);
+        return VoteCountsDto.from(accountableVotesPerCandidate);
     }
 
     @Override

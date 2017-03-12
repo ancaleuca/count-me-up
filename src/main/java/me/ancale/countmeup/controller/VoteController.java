@@ -30,7 +30,9 @@ public class VoteController {
     }
 
     // IMPORTANT: For the sake of brevity, I'm passing userId as a request parameter
-    // normally there would be some sort of authentication in place, e.g., using spring security
+    // Normally, there would be some sort of authentication in place, e.g., using spring security
+    // Also, some validation could have been done around candidateId,
+    // for example by keeping a list of known candidates and returning a 404 if candidateId is not in the list
     @RequestMapping(method = POST, path = "/{" + VAR_CANDIDATE_ID + "}")
     public ResponseEntity<?> vote(@PathVariable(VAR_CANDIDATE_ID) String candidateId,
                                   @RequestParam(VAR_USER_ID) String userId) {

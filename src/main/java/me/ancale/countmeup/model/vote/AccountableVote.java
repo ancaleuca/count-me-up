@@ -27,7 +27,7 @@ public class AccountableVote {
     private long timestamp;
 
     public AccountableVote(Vote vote) {
-        checkNotNull(vote, "'controller' cannot be null");
+        checkNotNull(vote, "'vote' cannot be null");
 
         this.userId = vote.getUserId();
         this.candidateId = vote.getCandidateId();

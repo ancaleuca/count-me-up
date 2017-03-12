@@ -1,12 +1,12 @@
 package me.ancale.countmeup.service;
 
 import me.ancale.countmeup.model.vote.Vote;
+import me.ancale.countmeup.model.vote.VoteCountsDto;
 import me.ancale.countmeup.service.inmemory.InMemoryVoteCounter;
 import org.junit.Test;
 
 import java.time.Instant;
 import java.util.Arrays;
-import java.util.Map;
 
 import static java.time.temporal.ChronoUnit.SECONDS;
 import static org.hamcrest.core.Is.is;
@@ -31,11 +31,14 @@ public class VoteCounterTest {
 
         voteCounter = new InMemoryVoteCounter(Arrays.asList(vote1, vote2, vote3, vote4));
 
-        Map<String, Long> votesPerCandidate = voteCounter.countAccountable().getAccountableVotesPerCandidate();
+        VoteCountsDto voteCountsDto = voteCounter.countAccountable();
 
-        assertThat(votesPerCandidate, is(notNullValue()));
-        assertThat(votesPerCandidate.size(), is(2));
-        assertThat(votesPerCandidate.get("c1"), is(2L));
-        assertThat(votesPerCandidate.get("c2"), is(1L));
+        assertThat(voteCountsDto, is(notNullValue()));
+        assertThat(voteCountsDto.getVoteCounts(), is(notNullValue()));
+        assertThat(voteCountsDto.getVoteCounts().size(), is(2));
+        assertThat(voteCountsDto.getVoteCounts().get(0).getCandidateId(), is("c1"));
+        assertThat(voteCountsDto.getVoteCounts().get(0).getCount(), is(2L));
+        assertThat(voteCountsDto.getVoteCounts().get(1).getCandidateId(), is("c2"));
+        assertThat(voteCountsDto.getVoteCounts().get(1).getCount(), is(1L));
     }
 }
