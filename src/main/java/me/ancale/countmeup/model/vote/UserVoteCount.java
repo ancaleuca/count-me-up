@@ -1,9 +1,6 @@
 package me.ancale.countmeup.model.vote;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -19,6 +16,10 @@ public class UserVoteCount {
     private String userId;
 
     private int voteCount;
+
+    @Version
+    @Column(name = "VERSION")
+    private Integer version;
 
     public UserVoteCount(String userId, int voteCount) {
         checkNotNull(userId, "'userId' cannot be null");
@@ -47,4 +48,7 @@ public class UserVoteCount {
         this.voteCount = voteCount;
     }
 
+    public Integer getVersion() {
+        return version;
+    }
 }

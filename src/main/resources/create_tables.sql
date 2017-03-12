@@ -14,6 +14,7 @@ CREATE TABLE `user_vote_count` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT,
     `user_id` varchar(20)  NOT NULL,
     `vote_count` bigint(20) NOT NULL,
+    `VERSION` bigint(20) NOT NULL DEFAULT '0',
     PRIMARY KEY (`id`),
     UNIQUE KEY `UQ_user_vote_count_user` (`user_id`)
 );
