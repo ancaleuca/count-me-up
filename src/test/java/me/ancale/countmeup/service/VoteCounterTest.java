@@ -3,7 +3,6 @@ package me.ancale.countmeup.service;
 import me.ancale.countmeup.model.vote.VoteCountsDto;
 import me.ancale.countmeup.repository.AccountableVoteRepository;
 import me.ancale.countmeup.repository.VoteCountPerCandidateQueryResult;
-import me.ancale.countmeup.service.counter.PersistenceBasedVoteCounter;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,7 +48,7 @@ public class VoteCounterTest {
 
     @Before
     public void before() {
-        voteCounter = new PersistenceBasedVoteCounter(accountableVoteRepository, null, null, clock);
+        voteCounter = new VoteCounter(accountableVoteRepository, clock);
 
         when(clock.millis()).thenReturn(CURRENT.toEpochMilli()).thenReturn(CURRENT_PLUS_ONE.toEpochMilli());
 

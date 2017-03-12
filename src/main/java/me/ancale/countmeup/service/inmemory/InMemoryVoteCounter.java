@@ -1,15 +1,11 @@
 package me.ancale.countmeup.service.inmemory;
 
-import com.google.common.annotations.VisibleForTesting;
 import me.ancale.countmeup.model.vote.Vote;
 import me.ancale.countmeup.model.vote.VoteCountsDto;
-import me.ancale.countmeup.service.VoteCounter;
-import me.ancale.countmeup.service.VoteStore;
-import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
 
 /**
  * This is a simple and fast memory-based solution for the counter.
@@ -18,8 +14,9 @@ import java.util.concurrent.ConcurrentHashMap;
  * Also, of course, all data would be lost if the server went down.
  * I implemented this for fun to see how well Java will cope with the large dataset.
  */
-@Component
-public class InMemoryVoteCounter implements VoteCounter, VoteStore {
+public class InMemoryVoteCounter {
+
+    private static final int MAX_VOTES_PER_USER = 3;
 
     private final Map<String, Long> votesPerCandidate;
     private final Map<String, Long> accountableVotesPerCandidate;
@@ -31,20 +28,10 @@ public class InMemoryVoteCounter implements VoteCounter, VoteStore {
         this.votesPerUser = new ConcurrentHashMap<>();
     }
 
-    @VisibleForTesting
-    public InMemoryVoteCounter(List<Vote> votes) {
-        this();
-        for (Vote vote: votes) {
-            addVote(vote);
-        }
-    }
-
-    @Override
     public synchronized VoteCountsDto countAccountable() {
         return VoteCountsDto.from(accountableVotesPerCandidate);
     }
 
-    @Override
     public synchronized void addVote(Vote vote) {
         increaseCountPerKey(votesPerUser, vote.getUserId());
         increaseCountPerKey(votesPerCandidate, vote.getCandidateId());

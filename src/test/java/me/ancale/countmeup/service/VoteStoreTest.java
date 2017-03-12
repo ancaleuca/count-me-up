@@ -6,7 +6,6 @@ import me.ancale.countmeup.model.vote.Vote;
 import me.ancale.countmeup.repository.AccountableVoteRepository;
 import me.ancale.countmeup.repository.UserVoteCountRepository;
 import me.ancale.countmeup.repository.VoteRepository;
-import me.ancale.countmeup.service.counter.PersistenceBasedVoteCounter;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,7 +35,7 @@ public class VoteStoreTest {
 
     @Before
     public void before() {
-        voteStore = new PersistenceBasedVoteCounter(accountableVoteRepository, voteRepository, userVoteCountRepository, null);
+        voteStore = new VoteStore(accountableVoteRepository, voteRepository, userVoteCountRepository);
 
         when(userVoteCountRepository.findByUserId(USER_WITH_FEW_VOTES)).thenReturn(new UserVoteCount(USER_WITH_FEW_VOTES, 2));
         when(userVoteCountRepository.findByUserId(USER_WITH_MANY_VOTES)).thenReturn(new UserVoteCount(USER_WITH_MANY_VOTES, 4));
