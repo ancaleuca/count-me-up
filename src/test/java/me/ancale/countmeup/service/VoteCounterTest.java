@@ -64,19 +64,15 @@ public class VoteCounterTest {
     public void shouldCountVotesPerCandidateBasedOnLatestPersistedVotesAndCachedVotes() {
         VoteCountsDto voteCountsDto = voteCounter.countAccountable();
 
-        assertThat(voteCountsDto, is(notNullValue()));
-        assertThat(voteCountsDto.getVoteCounts(), is(notNullValue()));
-        assertThat(voteCountsDto.getVoteCounts().size(), is(2));
-
-        assertThat(voteCountsDto.getVoteCounts().get(0).getCandidateId(), is(CANDIDATE_1));
-        assertThat(voteCountsDto.getVoteCounts().get(0).getCount(), is(CANDIDATE_1_VOTES_CURRENT));
-
-        assertThat(voteCountsDto.getVoteCounts().get(1).getCandidateId(), is(CANDIDATE_2));
-        assertThat(voteCountsDto.getVoteCounts().get(1).getCount(), is(CANDIDATE_2_VOTES_CURRENT));
+        checkCurrentVoteCounts(voteCountsDto);
 
         // on second call should add up cached votes + votes persisted in the mean time
         voteCountsDto = voteCounter.countAccountable();
 
+        checkInASecondVoteCounts(voteCountsDto);
+    }
+
+    private void checkInASecondVoteCounts(VoteCountsDto voteCountsDto) {
         assertThat(voteCountsDto, is(notNullValue()));
         assertThat(voteCountsDto.getVoteCounts(), is(notNullValue()));
         assertThat(voteCountsDto.getVoteCounts().size(), is(3));
@@ -89,6 +85,18 @@ public class VoteCounterTest {
 
         assertThat(voteCountsDto.getVoteCounts().get(2).getCandidateId(), is(CANDIDATE_3));
         assertThat(voteCountsDto.getVoteCounts().get(2).getCount(), is(CANDIDATE_3_VOTES));
+    }
+
+    private void checkCurrentVoteCounts(VoteCountsDto voteCountsDto) {
+        assertThat(voteCountsDto, is(notNullValue()));
+        assertThat(voteCountsDto.getVoteCounts(), is(notNullValue()));
+        assertThat(voteCountsDto.getVoteCounts().size(), is(2));
+
+        assertThat(voteCountsDto.getVoteCounts().get(0).getCandidateId(), is(CANDIDATE_1));
+        assertThat(voteCountsDto.getVoteCounts().get(0).getCount(), is(CANDIDATE_1_VOTES_CURRENT));
+
+        assertThat(voteCountsDto.getVoteCounts().get(1).getCandidateId(), is(CANDIDATE_2));
+        assertThat(voteCountsDto.getVoteCounts().get(1).getCount(), is(CANDIDATE_2_VOTES_CURRENT));
     }
 
     private void persistedVoteCountsBetweenStartAndEndTimestampAre(

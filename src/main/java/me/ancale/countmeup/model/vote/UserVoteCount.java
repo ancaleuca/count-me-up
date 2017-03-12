@@ -46,4 +46,5 @@ public class UserVoteCount {
     public void setVoteCount(int voteCount) {
         this.voteCount = voteCount;
     }
+
 }
