@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 public class VoteCountsDto {
 
     private final List<CandidateVoteCountDto> voteCounts;
@@ -13,6 +15,7 @@ public class VoteCountsDto {
     }
 
     public static VoteCountsDto from(Map<String, Long> votesPerCandidate) {
+        checkNotNull(votesPerCandidate, "'votesPerCandidate' cannot be null");
         List<CandidateVoteCountDto> candidateVotesList = votesPerCandidate.entrySet()
                 .stream().map(entry -> new CandidateVoteCountDto(entry.getKey(), entry.getValue()))
                 .sorted()
