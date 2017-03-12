@@ -2,7 +2,7 @@ package me.ancale.countmeup.controller;
 
 import me.ancale.countmeup.model.Candidate;
 import me.ancale.countmeup.model.User;
-import me.ancale.countmeup.service.VoteStore;
+import me.ancale.countmeup.counter.VoteApprover;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,11 +22,11 @@ public class VoteController {
     private static final String VAR_CANDIDATE_ID = "candidateId";
     private static final String VAR_USER_ID = "userId";
 
-    private final VoteStore voteStore;
+    private final VoteApprover voteApprover;
 
     @Autowired
-    public VoteController(VoteStore voteStore) {
-        this.voteStore = voteStore;
+    public VoteController(VoteApprover voteApprover) {
+        this.voteApprover = voteApprover;
     }
 
     // IMPORTANT: For the sake of brevity, I'm passing userId as a request parameter
@@ -39,7 +39,7 @@ public class VoteController {
         User user = new User(userId);
         Candidate candidate = new Candidate(candidateId);
 
-        voteStore.addVote(user.voteFor(candidate, Instant.now()));
+        voteApprover.addVote(user.voteFor(candidate, Instant.now()));
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

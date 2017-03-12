@@ -1,4 +1,4 @@
-package me.ancale.countmeup.service;
+package me.ancale.countmeup.counter;
 
 import me.ancale.countmeup.model.vote.AccountableVote;
 import me.ancale.countmeup.model.vote.UserVoteCount;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import javax.transaction.Transactional;
 
 @Component
-public class VoteStore {
+public class VoteApprover {
 
     private static final int MAX_VOTES_PER_USER = 3;
 
@@ -21,9 +21,9 @@ public class VoteStore {
     private final UserVoteCountRepository userVoteCountRepository;
 
     @Autowired
-    public VoteStore(AccountableVoteRepository accountableVoteRepository,
-                     VoteRepository voteRepository,
-                     UserVoteCountRepository userVoteCountRepository) {
+    public VoteApprover(AccountableVoteRepository accountableVoteRepository,
+                        VoteRepository voteRepository,
+                        UserVoteCountRepository userVoteCountRepository) {
         this.accountableVoteRepository = accountableVoteRepository;
         this.voteRepository = voteRepository;
         this.userVoteCountRepository = userVoteCountRepository;

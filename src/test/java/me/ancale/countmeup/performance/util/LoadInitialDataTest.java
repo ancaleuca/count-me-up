@@ -1,7 +1,7 @@
-package me.ancale.countmeup.performance;
+package me.ancale.countmeup.performance.util;
 
 import me.ancale.countmeup.model.vote.Vote;
-import me.ancale.countmeup.service.VoteStore;
+import me.ancale.countmeup.counter.VoteApprover;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +21,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 public class LoadInitialDataTest {
 
     @Autowired
-    private VoteStore voteStore;
+    private VoteApprover voteApprover;
 
     @Test
     @Ignore
@@ -33,7 +33,7 @@ public class LoadInitialDataTest {
         for (int i = 0; i < voteCount; i++) {
             String userId = "u" + random.nextInt(userCount);
             String candidateId = "c" + (1 + random.nextInt(4));
-            voteStore.addVote(new Vote(userId, candidateId, Instant.now()));
+            voteApprover.addVote(new Vote(userId, candidateId, Instant.now()));
         }
     }
 

@@ -1,4 +1,4 @@
-package me.ancale.countmeup.service;
+package me.ancale.countmeup.counter;
 
 import me.ancale.countmeup.model.vote.AccountableVote;
 import me.ancale.countmeup.model.vote.UserVoteCount;
@@ -20,12 +20,12 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class VoteStoreTest {
+public class VoteApproverTest {
 
     private static final String USER_WITH_FEW_VOTES = "u1";
     private static final String USER_WITH_MANY_VOTES = "u2";
 
-    private VoteStore voteStore;
+    private VoteApprover voteApprover;
     @Mock
     private AccountableVoteRepository accountableVoteRepository;
     @Mock
@@ -35,7 +35,7 @@ public class VoteStoreTest {
 
     @Before
     public void before() {
-        voteStore = new VoteStore(accountableVoteRepository, voteRepository, userVoteCountRepository);
+        voteApprover = new VoteApprover(accountableVoteRepository, voteRepository, userVoteCountRepository);
 
         when(userVoteCountRepository.findByUserId(USER_WITH_FEW_VOTES)).thenReturn(new UserVoteCount(USER_WITH_FEW_VOTES, 2));
         when(userVoteCountRepository.findByUserId(USER_WITH_MANY_VOTES)).thenReturn(new UserVoteCount(USER_WITH_MANY_VOTES, 4));
@@ -46,7 +46,7 @@ public class VoteStoreTest {
         Instant now = Instant.now();
         Vote vote = new Vote(USER_WITH_FEW_VOTES, "c1", now);
 
-        voteStore.addVote(vote);
+        voteApprover.addVote(vote);
 
         verify(voteRepository).save(vote);
         verify(accountableVoteRepository).save(new AccountableVote(vote));
@@ -62,7 +62,7 @@ public class VoteStoreTest {
         Instant now = Instant.now();
         Vote vote = new Vote(USER_WITH_MANY_VOTES, "c1", now);
 
-        voteStore.addVote(vote);
+        voteApprover.addVote(vote);
 
         verify(voteRepository).save(vote);
         verifyNoMoreInteractions(accountableVoteRepository);

@@ -1,7 +1,7 @@
 package me.ancale.countmeup.controller;
 
 import me.ancale.countmeup.model.vote.VoteCountsDto;
-import me.ancale.countmeup.service.VoteCounter;
+import me.ancale.countmeup.counter.VoteCounter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

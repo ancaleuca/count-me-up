@@ -1,4 +1,4 @@
-package me.ancale.countmeup.service;
+package me.ancale.countmeup.counter;
 
 import me.ancale.countmeup.model.vote.VoteCountsDto;
 import me.ancale.countmeup.repository.AccountableVoteRepository;

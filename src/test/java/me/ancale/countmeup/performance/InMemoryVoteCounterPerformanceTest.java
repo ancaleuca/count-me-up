@@ -1,8 +1,8 @@
 package me.ancale.countmeup.performance;
 
 import me.ancale.countmeup.PerformanceTest;
+import me.ancale.countmeup.inmemory.InMemoryVoteCounter;
 import me.ancale.countmeup.model.vote.Vote;
-import me.ancale.countmeup.service.inmemory.InMemoryVoteCounter;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 

@@ -1,4 +1,4 @@
-package me.ancale.countmeup.service;
+package me.ancale.countmeup.counter;
 
 import com.google.common.annotations.VisibleForTesting;
 import me.ancale.countmeup.model.vote.VoteCountsDto;
