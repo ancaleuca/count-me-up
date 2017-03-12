@@ -82,12 +82,12 @@ In addition, we store in memory:
 * the timestamp of the last countMeUp run
 * the results of the last countMeUp run
 
-These fields are updated every time we run countMeUp, using their old value and whatever we find in `accountable_vote`
+The results are updated every time we run countMeUp, using cached value and whatever we find in `accountable_vote`
 between the last time we've run countMeUp and the current time.
-This solution will run in under one second, because the only work done is a count with group by for just the votes stored in the
-past second or so.
-The following graph shows the average response times for countMeUp when run every second. The starting point is
-when there had already been 1 million votes and the server is being loaded with about 50 concurrent users voting every
+This solution will run in under one second, because the only work done is a `count` with `group by` on one table for rows
+stored in the past second or so.
+The following graph shows the average response times for countMeUp, when run every second. The starting point is
+when there had already been 1 million votes, and the server is being loaded with about 50 concurrent users voting every
 second (see `CountMeUpPerformanceTest.jmx` for the test plan).
 
 ![Response times for countMeUp](https://octodex.github.com/images/yaktocat.png)
@@ -95,18 +95,18 @@ second (see `CountMeUpPerformanceTest.jmx` for the test plan).
 ## Approach
 I started with a simple in-memory counter, which kept a map from candidates to their accountable vote counts and an
 additional helper map from users to number of casted votes. You can see this solution in `InMemoryVoteCounter.java`
-This, of course, was neve going to be a viable solution because it didn't persist anything (so the server could go down at any point
+This, of course, was never going to be a viable solution because it didn't persist anything (so the server could go down at any point
 and lose all data), and also the cache could not be shared between multiple instances of the same server.
 However, it did serve as a good starting point because it made me think of the database structure I've outlined above, with
 the helper `user_vote_count` table.
+
 The second solution, using the database, was good but not performant. When running the performance test for just 1 million
 votes, it took 30 seconds to run countMeUp. This made me think I needed to use a cache as well, to speed it up.
 
 The cache + database solution was my final iteration on the problem, and it is correct because:
-
 * the vote counts are accurate: they are based on what we store in the database and the current timestamp
-* the vote counts are valid: we only store accountable votes in the third table
+* the vote counts are valid: we only store accountable votes in `accountable_vote`
 * the cache could be a minor problem if the server went down and a new instance was spawned. However, there are ways to get
  around it, for example by populating it on startup.
-* the cache will differ from one server instance to another, but regardless the counts will be correct, because they are
+* the cache will differ from one server instance to another, but regardless, the counts will be correct, because they are
 based on previous values stored in the cache and the database, which is consistent.
