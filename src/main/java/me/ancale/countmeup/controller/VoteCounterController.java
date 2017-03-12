@@ -1,7 +1,6 @@
 package me.ancale.countmeup.controller;
 
 import me.ancale.countmeup.model.vote.AccountableVoteCountSummary;
-import me.ancale.countmeup.model.vote.TotalVoteCountSummary;
 import me.ancale.countmeup.service.VoteCounter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,13 +22,8 @@ public class VoteCounterController {
         this.voteCounter = voteCounter;
     }
 
-    @RequestMapping(method = GET, path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<TotalVoteCountSummary> allVotesSummary() {
-        return new ResponseEntity<>(voteCounter.countAll(), HttpStatus.OK);
-    }
-
-    @RequestMapping(method = GET, path = "/accountable", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AccountableVoteCountSummary> accountableVotesSummary() {
+    @RequestMapping(method = GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<AccountableVoteCountSummary> accountableVotesPerCandidate() {
         return new ResponseEntity<>(voteCounter.countAccountable(), HttpStatus.OK);
     }
 }

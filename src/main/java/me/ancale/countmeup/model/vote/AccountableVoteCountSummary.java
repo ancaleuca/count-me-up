@@ -6,13 +6,13 @@ import java.util.Map;
 
 public class AccountableVoteCountSummary {
 
-    private final ImmutableMap<String, Long> accountablePerCandidate;
+    private final ImmutableMap<String, Long> accountableVotesPerCandidate;
 
-    public AccountableVoteCountSummary(Map<String, Long> accountablePerCandidate) {
-        this.accountablePerCandidate = ImmutableMap.copyOf(accountablePerCandidate);
+    public AccountableVoteCountSummary(Map<String, Long> accountableVotesPerCandidate) {
+        this.accountableVotesPerCandidate = ImmutableMap.copyOf(accountableVotesPerCandidate);
     }
 
-    public ImmutableMap<String, Long> getAccountablePerCandidate() {
-        return accountablePerCandidate;
+    public ImmutableMap<String, Long> getAccountableVotesPerCandidate() {
+        return accountableVotesPerCandidate;
     }
 }

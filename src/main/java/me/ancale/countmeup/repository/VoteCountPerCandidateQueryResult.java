@@ -1,11 +1,11 @@
-package me.ancale.countmeup.model.vote;
+package me.ancale.countmeup.repository;
 
-public class VotePerCandidate {
+public class VoteCountPerCandidateQueryResult {
 
     private String candidateId;
     private Long count;
 
-    public VotePerCandidate(String candidateId, Long count) {
+    public VoteCountPerCandidateQueryResult(String candidateId, Long count) {
         this.candidateId = candidateId;
         this.count = count;
     }

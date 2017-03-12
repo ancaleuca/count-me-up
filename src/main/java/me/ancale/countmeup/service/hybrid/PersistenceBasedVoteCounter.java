@@ -1,14 +1,17 @@
 package me.ancale.countmeup.service.hybrid;
 
-import me.ancale.countmeup.model.vote.*;
+import me.ancale.countmeup.model.vote.AccountableVote;
+import me.ancale.countmeup.model.vote.AccountableVoteCountSummary;
+import me.ancale.countmeup.model.vote.UserVoteCount;
+import me.ancale.countmeup.model.vote.Vote;
 import me.ancale.countmeup.repository.AccountableVoteRepository;
 import me.ancale.countmeup.repository.UserVoteCountRepository;
+import me.ancale.countmeup.repository.VoteCountPerCandidateQueryResult;
 import me.ancale.countmeup.repository.VoteRepository;
 import me.ancale.countmeup.service.VoteCounter;
 import me.ancale.countmeup.service.VoteStore;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.transaction.Transactional;
 import java.time.Instant;
@@ -19,7 +22,7 @@ import java.util.stream.Collectors;
 
 @Primary
 @Component
-public class HybridVoteCounter implements VoteCounter, VoteStore {
+public class PersistenceBasedVoteCounter implements VoteCounter, VoteStore {
 
     private final Map<String, Long> accountableVotesPerCandidate;
     private final AtomicLong lastReadTimestamp;
@@ -28,8 +31,8 @@ public class HybridVoteCounter implements VoteCounter, VoteStore {
     private final VoteRepository voteRepository;
     private final UserVoteCountRepository userVoteCountRepository;
 
-    public HybridVoteCounter(AccountableVoteRepository accountableVoteRepository, VoteRepository voteRepository,
-                             UserVoteCountRepository userVoteCountRepository) {
+    public PersistenceBasedVoteCounter(AccountableVoteRepository accountableVoteRepository, VoteRepository voteRepository,
+                                       UserVoteCountRepository userVoteCountRepository) {
         this.accountableVoteRepository = accountableVoteRepository;
         this.voteRepository = voteRepository;
         this.userVoteCountRepository = userVoteCountRepository;
@@ -38,15 +41,10 @@ public class HybridVoteCounter implements VoteCounter, VoteStore {
     }
 
     @Override
-    public TotalVoteCountSummary countAll() {
-        throw new NotImplementedException();
-    }
-
-    @Override
     public synchronized AccountableVoteCountSummary countAccountable() {
         long currentTimestamp = Instant.now().toEpochMilli();
         Map<String, Long> latestVotes = accountableVoteRepository.countVotesPerCandidate(lastReadTimestamp.get(), currentTimestamp)
-                .stream().collect(Collectors.toMap(VotePerCandidate::getCandidateId, VotePerCandidate::getCount));
+                .stream().collect(Collectors.toMap(VoteCountPerCandidateQueryResult::getCandidateId, VoteCountPerCandidateQueryResult::getCount));
 
         for (String candidateId: latestVotes.keySet()) {
             if (!accountableVotesPerCandidate.containsKey(candidateId)) {
@@ -55,6 +53,7 @@ public class HybridVoteCounter implements VoteCounter, VoteStore {
             accountableVotesPerCandidate.put(candidateId,
                     accountableVotesPerCandidate.get(candidateId) + latestVotes.get(candidateId));
         }
+
         lastReadTimestamp.set(currentTimestamp);
         return new AccountableVoteCountSummary(accountableVotesPerCandidate);
     }

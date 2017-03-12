@@ -2,7 +2,6 @@ package me.ancale.countmeup.service.inmemory;
 
 import com.google.common.annotations.VisibleForTesting;
 import me.ancale.countmeup.model.vote.AccountableVoteCountSummary;
-import me.ancale.countmeup.model.vote.TotalVoteCountSummary;
 import me.ancale.countmeup.model.vote.Vote;
 import me.ancale.countmeup.service.VoteCounter;
 import me.ancale.countmeup.service.VoteStore;
@@ -38,11 +37,6 @@ public class InMemoryVoteCounter implements VoteCounter, VoteStore {
         for (Vote vote: votes) {
             addVote(vote);
         }
-    }
-
-    @Override
-    public synchronized TotalVoteCountSummary countAll() {
-        return new TotalVoteCountSummary(votesPerCandidate, accountableVotesPerCandidate);
     }
 
     @Override

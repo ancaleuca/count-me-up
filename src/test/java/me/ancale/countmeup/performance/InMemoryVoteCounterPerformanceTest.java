@@ -20,12 +20,12 @@ public class InMemoryVoteCounterPerformanceTest {
     @Test
     public void multipleThreadsShouldCountVotesUnderOneSecond() throws Exception {
         InMemoryVoteCounter inMemoryVoteCounter = new InMemoryVoteCounter();
-        int totalExpectedCount = 10_000_000;
+        int totalVoteCount = 10_000_000;
         int totalAddingThreads = 100;
         List<Thread> threads = new ArrayList<>(totalAddingThreads);
 
         for (int i = 0; i < totalAddingThreads; i++) {
-            threads.add(new Thread(() -> addVotes(totalExpectedCount / totalAddingThreads, inMemoryVoteCounter)));
+            threads.add(new Thread(() -> addVotes(totalVoteCount / totalAddingThreads, inMemoryVoteCounter)));
         }
 
         Thread countingThread = new Thread(() -> countVotes(inMemoryVoteCounter));
@@ -39,8 +39,6 @@ public class InMemoryVoteCounterPerformanceTest {
         for (Thread thread : threads) {
             thread.join();
         }
-
-        assertThat(inMemoryVoteCounter.countAll().getTotalVotes(), is((long)totalExpectedCount));
     }
 
     private void addVotes(int count, InMemoryVoteCounter inMemoryVoteCounter) {
@@ -62,7 +60,7 @@ public class InMemoryVoteCounterPerformanceTest {
                 fail(e.getMessage());
             }
             Instant start = Instant.now();
-            inMemoryVoteCounter.countAll();
+            inMemoryVoteCounter.countAccountable();
             Instant end = Instant.now();
             long millisSpentCounting = end.toEpochMilli() - start.toEpochMilli();
             assertThat("Took over a second to count = " + millisSpentCounting, millisSpentCounting < 1000, is(true));
