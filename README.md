@@ -18,9 +18,13 @@ mvn clean test
 
 ## Running the application
 
-```
-mvn spring-boot:run
-```
+* create a database called `count_me_up` in MySQL
+
+* change the `spring.datasource.password` property in `application.properties`
+
+* create the tables by running `create_tables.sql`
+
+* start the app: `mvn spring-boot:run`
 
 ## Endpoints
 
